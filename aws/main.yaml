@@ -1,0 +1,84 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: IAM role for Cresta S3 Bucket Data Access
+Parameters:
+  ExternalId:
+    Description: >-
+      External ID for the data access role (ask your Cresta account manager)
+    Type: String
+    AllowedPattern: .+
+    ConstraintDescription: ExternalId is required
+  SourceBucketName:
+    Description: >-
+      The contents of this bucket will be shared with Cresta
+    Type: String
+    AllowedPattern: .+
+    ConstraintDescription: BucketName is required
+  DestinationBucketName:
+    Description: >-
+      Contents from source S3 bucket will go here (ask your Cresta account manager)
+    Type: String
+    AllowedPattern: .+
+    ConstraintDescription: BucketName is required
+  IAMRoleName:
+    Description: Customize the name of IAM role for ingesting/sending data to Cresta
+    Type: String
+    Default: CrestaIngestionRole
+  CrestaAWSAccountId:
+    Description: >-
+      Cresta AWS account ID allowed to assume the IAM role. DO NOT CHANGE!
+    Type: String
+    Default: "242659714806"
+Resources:
+  CrestaIngestionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                - !Sub 'arn:aws:iam::${CrestaAWSAccountId}:root'
+            Action:
+              - 'sts:AssumeRole'
+            Condition:
+              StringEquals:
+                'sts:ExternalId': !Ref ExternalId
+      RoleName: !Ref IAMRoleName
+      Policies:
+        - PolicyName: CrestaIngestionSrcPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                Effect: Allow
+                Resource:
+                  - !Sub 'arn:aws:s3:::${SourceBucketName}'
+                  - !Sub 'arn:aws:s3:::${SourceBucketName}/*'
+                Action:
+                  - 's3:Get*'
+                  - 's3:List*'
+                  - 's3:PutBucketNotification'
+        - PolicyName: CrestaIngestionDstPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                Effect: Allow
+                Resource:
+                  - !Sub 'arn:aws:s3:::${DestinationBucketName}'
+                  - !Sub 'arn:aws:s3:::${DestinationBucketName}/*'
+                Action:
+                  - 's3:List*'
+                  - 's3:Put*'
+Outputs: 
+  IAMRoleName:
+    Description: AWS IAM Role named to be used with Cresta Data Ingestion 
+    Value: !Ref CrestaIngestionRole
+  AccountId:
+    Description: AWS Account number
+    Value: !Ref "AWS::AccountId"
+  RoleArn: 
+    Description: Arn of Created Role
+    Value: !GetAtt CrestaIngestionRole.Arn
+  Region:
+    Description: AWS Region
+    Value: !Ref "AWS::Region"
