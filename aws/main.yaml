@@ -13,12 +13,6 @@ Parameters:
     Type: String
     AllowedPattern: .+
     ConstraintDescription: BucketName is required
-  DestinationBucketName:
-    Description: >-
-      Contents from source S3 bucket will go here (ask your Cresta account manager)
-    Type: String
-    AllowedPattern: .+
-    ConstraintDescription: BucketName is required
   IAMRoleName:
     Description: Customize the name of IAM role for ingesting/sending data to Cresta
     Type: String
@@ -27,7 +21,7 @@ Parameters:
     Description: >-
       Cresta AWS account ID allowed to assume the IAM role. DO NOT CHANGE!
     Type: String
-    Default: "242659714806"
+    Default: "510370324380"
 Resources:
   CrestaIngestionRole:
     Type: 'AWS::IAM::Role'
@@ -58,17 +52,6 @@ Resources:
                   - 's3:Get*'
                   - 's3:List*'
                   - 's3:PutBucketNotification'
-        - PolicyName: CrestaIngestionDstPolicy
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-                Effect: Allow
-                Resource:
-                  - !Sub 'arn:aws:s3:::${DestinationBucketName}'
-                  - !Sub 'arn:aws:s3:::${DestinationBucketName}/*'
-                Action:
-                  - 's3:List*'
-                  - 's3:Put*'
 Outputs: 
   IAMRoleName:
     Description: AWS IAM Role named to be used with Cresta Data Ingestion 
