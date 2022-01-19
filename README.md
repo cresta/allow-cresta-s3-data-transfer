@@ -11,7 +11,7 @@ Easily set up Cresta data integration using CloudFormation
    1. Make sure you have switched to the same region as the Source S3 Bucket
    1. Fill in all the `required` parameters.
    1. Click **Create stack**.
-1. Take a screenshot of the outputs after template creation is complete, and send to your Cresta Account Manager
+1. Wait for the stack creation to complete, then, in CloudFormation Stack view, click on Outputs tab.  Take a screenshot of the outputs, and send to your Cresta Account Manager
 
 ## AWS Resources
 
@@ -19,4 +19,3 @@ This template creates the following AWS resource and policies required by the Cr
 
 - An IAM role for Cresta to assume for data collection from the Source Bucket
 - Policy to read from the Source S3 Bucket in your AWS account
-- Policy to write into the Destination S3 Bucket in account managed by Cresta
