@@ -3,7 +3,7 @@ Easily set up Cresta data integration using CloudFormation
 
 # Cresta AWS Data Access Integration
 
-[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?stackName=cresta&templateURL=https://cresta-cloudformation-template.s3.amazonaws.com/aws/main.yaml)
+[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?stackName=allow-cresta-s3-data-transfer&templateURL=https://cresta-cloudformation-template.s3.amazonaws.com/allow-cresta-s3-data-transfer/aws/main.yaml)
 
 ## Installation
 1. Ask your Cresta Account Manager for the External ID and Destination Bucket Name
