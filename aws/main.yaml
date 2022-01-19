@@ -51,7 +51,6 @@ Resources:
                 Action:
                   - 's3:Get*'
                   - 's3:List*'
-                  - 's3:PutBucketNotification'
 Outputs: 
   IAMRoleName:
     Description: AWS IAM Role named to be used with Cresta Data Ingestion 
