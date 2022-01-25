@@ -51,7 +51,10 @@ Resources:
                 Action:
                   - 's3:Get*'
                   - 's3:List*'
-Outputs: 
+Outputs:
+  SourceBucketName:
+    Description: S3 Bucket with source data for transfer
+    Value: !Ref SourceBucketName
   IAMRoleName:
     Description: AWS IAM Role named to be used with Cresta Data Ingestion 
     Value: !Ref CrestaIngestionRole
