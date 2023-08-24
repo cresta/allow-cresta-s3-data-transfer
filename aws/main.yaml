@@ -39,7 +39,6 @@ Resources:
                       !Join 
                         - ":root,arn:aws:iam::"
                         - !Ref CrestaAWSAccountIds
-
             Action:
               - 'sts:AssumeRole'
             Condition:
