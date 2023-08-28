@@ -1,0 +1,46 @@
+name: Push to S3
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: {}
+
+jobs:
+  debug_oidc:
+    name: Debug OIDC Claims
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout actions-oidc-debugger
+        uses: actions/checkout@v3
+        with:
+          repository: github/actions-oidc-debugger
+          ref: main
+          path: ./.github/actions/actions-oidc-debugger
+      - name: Debug OIDC Claims
+        uses: ./.github/actions/actions-oidc-debugger
+        with:
+          audience: 'https://github.com/cresta'
+  push:
+    name: Push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Assume IAM Role
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.ALLOW_CRESTA_S3_DATA_TRANSFER_ROLE_ARN }}
+          role-session-name: allow-cresta-s3-data-transfer
+          aws-region: us-west-2
+
+      - name: Push to S3
+        run: |
+          aws s3 cp ./aws s3://${{ secrets.CRESTA_CLOUDFORMATION_S3_BUCKET }}/allow-cresta-s3-data-transfer/aws --recursive
