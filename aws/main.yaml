@@ -58,6 +58,9 @@ Resources:
                   - 's3:Get*'
                   - 's3:List*'
 Outputs:
+  ExternalId:
+    Description: External ID for the data access role
+    Value: !Ref ExternalId
   SourceBucketName:
     Description: S3 Bucket with source data for transfer
     Value: !Ref SourceBucketName
