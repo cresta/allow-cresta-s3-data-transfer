@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Assume IAM Role
-        uses: aws-actions/configure-aws-credentials@v3
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.ALLOW_CRESTA_S3_DATA_TRANSFER_ROLE_ARN }}
           role-session-name: allow-cresta-s3-data-transfer
