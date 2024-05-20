@@ -15,5 +15,6 @@ This template creates the following AWS resource and policies required by the Cr
 4. Fill in all the required parameters
 5. Click Create stack
 
-Wait for the stack creation to complete, then, in CloudFormation Stack view, click on Outputs tab. Take a screenshot
-  of the outputs, and provide it to your Cresta Project Manager.
+Wait for the stack creation to complete.
+Then, in CloudFormation Stack view, click on Outputs tab. 
+Take a screenshot of the outputs, and provide it to your Cresta account manager.
