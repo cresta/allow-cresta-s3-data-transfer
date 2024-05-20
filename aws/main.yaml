@@ -96,3 +96,6 @@ Outputs:
   Region:
     Description: AWS Region
     Value: !Ref "AWS::Region"
+  WriteAccess:
+    Description: WriteAccess
+    Value: !Ref WriteAccess
