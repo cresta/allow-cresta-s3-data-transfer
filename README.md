@@ -2,8 +2,6 @@
 
 [![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?stackName=allow-cresta-s3-data-transfer&templateURL=https://cresta-cloudformation-template.s3.amazonaws.com/allow-cresta-s3-data-transfer/aws/main.yaml)
 
-# AWS Resources
-
 This template creates the following AWS resource and policies required by the Cresta AWS Data Access Integration:
 
 - An IAM role for Cresta to assume for data access to the source S3 bucket in your AWS account
