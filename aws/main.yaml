@@ -69,14 +69,19 @@ Resources:
               Action:
                 - "s3:Get*"
                 - "s3:List*"
-                - !If
-                  - WriteAccessCondition
+        - !If
+          - WriteAccessCondition
+          - PolicyName: CrestaIngestionSrcWritePolicy
+            PolicyDocument:
+              Version: 2012-10-17
+              Statement:
+                Effect: Allow
+                Resource:
+                  - !Sub "arn:aws:s3:::${SourceBucketName}/*"
+                Action:
                   - "s3:Put*"
-                  - !Ref "AWS::NoValue"
-                - !If
-                  - WriteAccessCondition
                   - "s3:Delete*"
-                  - !Ref "AWS::NoValue"
+          - !Ref "AWS::NoValue"
 Outputs:
   ExternalId:
     Description: External ID for the data access role
