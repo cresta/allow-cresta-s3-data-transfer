@@ -22,9 +22,21 @@ Parameters:
       Comma separated list of AWS account IDs allowed to assume the IAM role. DO NOT CHANGE!
     Type: CommaDelimitedList
     Default: 510370324380,488350602631
+  WriteAccess:
+    Description: >-
+      Allow Cresta to write to the bucket
+    Type: String
+    AllowedValues:
+      - "true"
+      - "false"
+    Default: "false"
+Conditions:
+  WriteAccessCondition: !Equals
+    - !Ref WriteAccess
+    - "true"
 Resources:
   CrestaIngestionRole:
-    Type: 'AWS::IAM::Role'
+    Type: "AWS::IAM::Role"
     Properties:
       AssumeRolePolicyDocument:
         Version: 2012-10-17
@@ -32,31 +44,44 @@ Resources:
           - Effect: Allow
             Principal:
               AWS: !Split
-                - ',' 
+                - ","
                 - !Sub
                   - arn:aws:iam::${account}:root
                   - account:
-                      !Join 
-                        - ":root,arn:aws:iam::"
-                        - !Ref CrestaAWSAccountIds
+                      !Join
+                      - ":root,arn:aws:iam::"
+                      - !Ref CrestaAWSAccountIds
             Action:
-              - 'sts:AssumeRole'
+              - "sts:AssumeRole"
             Condition:
               StringEquals:
-                'sts:ExternalId': !Ref ExternalId
+                "sts:ExternalId": !Ref ExternalId
       RoleName: !Ref IAMRoleName
       Policies:
         - PolicyName: CrestaIngestionSrcPolicy
           PolicyDocument:
             Version: 2012-10-17
             Statement:
+              Effect: Allow
+              Resource:
+                - !Sub "arn:aws:s3:::${SourceBucketName}"
+                - !Sub "arn:aws:s3:::${SourceBucketName}/*"
+              Action:
+                - "s3:Get*"
+                - "s3:List*"
+        - !If
+          - WriteAccessCondition
+          - PolicyName: CrestaIngestionSrcWritePolicy
+            PolicyDocument:
+              Version: 2012-10-17
+              Statement:
                 Effect: Allow
                 Resource:
-                  - !Sub 'arn:aws:s3:::${SourceBucketName}'
-                  - !Sub 'arn:aws:s3:::${SourceBucketName}/*'
+                  - !Sub "arn:aws:s3:::${SourceBucketName}/*"
                 Action:
-                  - 's3:Get*'
-                  - 's3:List*'
+                  - "s3:Put*"
+                  - "s3:Delete*"
+          - !Ref "AWS::NoValue"
 Outputs:
   ExternalId:
     Description: External ID for the data access role
@@ -65,14 +90,17 @@ Outputs:
     Description: S3 Bucket with source data for transfer
     Value: !Ref SourceBucketName
   IAMRoleName:
-    Description: AWS IAM Role named to be used with Cresta Data Ingestion 
+    Description: AWS IAM Role named to be used with Cresta Data Ingestion
     Value: !Ref CrestaIngestionRole
   AccountId:
     Description: AWS Account number
     Value: !Ref "AWS::AccountId"
-  RoleArn: 
+  RoleArn:
     Description: Arn of Created Role
     Value: !GetAtt CrestaIngestionRole.Arn
   Region:
     Description: AWS Region
     Value: !Ref "AWS::Region"
+  WriteAccess:
+    Description: WriteAccess
+    Value: !Ref WriteAccess
