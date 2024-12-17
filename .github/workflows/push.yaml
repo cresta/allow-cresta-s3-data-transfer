@@ -9,7 +9,9 @@ on:
 jobs:
   push:
     name: Push
-    runs-on: [self-hosted, cpu]
+    runs-on:
+      - self-hosted
+      - cpu
     permissions:
       contents: read
       id-token: write
