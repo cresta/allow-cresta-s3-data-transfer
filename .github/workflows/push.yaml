@@ -9,7 +9,7 @@ on:
 jobs:
   push:
     name: Push
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, cpu]
     permissions:
       contents: read
       id-token: write
@@ -17,12 +17,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Assume IAM Role
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Get AWS Credentials
+        uses: cresta/action-vault-aws-credentials@v0.0.8
         with:
-          role-to-assume: ${{ secrets.ALLOW_CRESTA_S3_DATA_TRANSFER_ROLE_ARN }}
-          role-session-name: allow-cresta-s3-data-transfer
-          aws-region: us-west-2
+          aws-account-name: ${{ secrets.AWS_ACCOUNT_NAME }}
+          vault-role: ${{ secrets.VAULT_ROLE }}
+          vault-address: ${{ secrets.VAULT_ADDRESS }}
 
       - name: Push to S3
         run: |
