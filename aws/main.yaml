@@ -21,7 +21,7 @@ Parameters:
     Description: >-
       Comma separated list of AWS account IDs allowed to assume the IAM role. DO NOT CHANGE!
     Type: CommaDelimitedList
-    Default: 510370324380,488350602631
+    Default: 510370324380,488350602631,730335187493,107136125828
   WriteAccess:
     Description: >-
       Allow Cresta to write to the bucket
