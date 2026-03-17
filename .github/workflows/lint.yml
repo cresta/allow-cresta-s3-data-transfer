@@ -12,4 +12,4 @@ jobs:
     - name: cfn-lint
       uses: scottbrenner/cfn-lint-action@v2.6.0
       with:
-        args: "**/*.yaml"
+        command: "**/*.yaml"
